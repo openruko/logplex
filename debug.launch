@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export WEBPORT=9996
+export UDPPORT=9999
+
+exec logplex/bin/logplex
