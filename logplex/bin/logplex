@@ -15,7 +15,7 @@ udpServer.start();
 
 process.on('SIGTERM', function() {
   console.log('SIGTERM received shutting down gracefully');
-  server.close();
+  udpServer.stop();
   webServer.stop();
   console.log('Shutdown gracefully.');
 });
