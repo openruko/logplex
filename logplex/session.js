@@ -23,7 +23,6 @@ function CompositeRingBuffer(options) {
 
     rbs.forEach(function(rb) {
       var all = rb.getAll();
-      console.dir(all)
       all.forEach(function(item) {
         if(item) {
           item.channel = rb.channel;
@@ -33,13 +32,11 @@ function CompositeRingBuffer(options) {
       output = output.concat(all); // inefficient use push?
     });
     output.sort(function(entry1, entry2) {
-      console.log(entry1.ts)
-      console.log(entry2.ts)
       return entry1.ts > entry2.ts ? 1 : -1;
     });
     return output;
   };
-  
+
   rbs.forEach(function(rb) {
     rb.on('added', function(item) {
       var contextedItem = {
