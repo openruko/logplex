@@ -9,7 +9,7 @@ var webServerPort = process.env.WEBPORT || 9996;
 var webServer = require('../webserver').createServer({ port: webServerPort });
 webServer.start();
 
-var udpServerPort = process.env.UDPPORT || 9997;
+var udpServerPort = process.env.UDPPORT || 9999;
 var udpServer = require('../udpserver').createServer({ port: udpServerPort });
 udpServer.start();
 
