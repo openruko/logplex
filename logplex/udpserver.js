@@ -11,6 +11,7 @@ function LogplexUDPServer(options) {
   var self = this;
 
   self.start = function() {
+    console.log('Logplex udp server listening on port ' + options.port);
     self.server = udp.createSocket('udp4');
     self.server.bind(options.port);
     self.server.on('message', function(raw,meta) {

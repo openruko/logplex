@@ -15,6 +15,7 @@ function LogplexWebServer(options) {
   var self = this;
 
   self.start = function() {
+    console.log('Logplex web server listening on port ' + options.port);
     var router = new director.http.Router();
     self.webServer = union.createServer({
       before: [

@@ -30,10 +30,20 @@ Configure LOGPLEX_SERVER in other openruko components
 
 ## Environment Variables
 
+logplex/bin/logplex will check the presence of several environment variables,
+these must be configured as part of the process start - e.g. configured in
+supervisord or as part of boot script. see ./logplex/conf.js
+
 * WEBPORT - Port for API interface
 * UDP - Port to receive log messages from
 
-## Help and Todo 
+## Launch
+
+```
+foreman start
+```
+
+## Help and Todo
 
 A lot...
 

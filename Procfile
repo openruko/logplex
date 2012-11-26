@@ -1,0 +1,1 @@
+logplex: logplex/bin/logplex

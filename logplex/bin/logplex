@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 
 var RingBuffer = require('../ringbuffer');
-
+var conf = require('../conf');
 var version = require('../../package.json').version;
 console.log('Openruko logplex server v' + version);
 
-var webServerPort = process.env.WEBPORT || 9996;
-var webServer = require('../webserver').createServer({ port: webServerPort });
+var webServer = require('../webserver').createServer({ port: conf.logplex.webPort });
 webServer.start();
 
-var udpServerPort = process.env.UDPPORT || 9997;
-var udpServer = require('../udpserver').createServer({ port: udpServerPort });
+var udpServer = require('../udpserver').createServer({ port: conf.logplex.udpPort });
 udpServer.start();
 
 process.on('SIGTERM', function() {
