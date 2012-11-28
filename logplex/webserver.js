@@ -37,7 +37,6 @@ function LogplexWebServer(options) {
 
 }
 
-
 var sessions = [];
 
 function setupRoutes(router) {
@@ -45,7 +44,6 @@ function setupRoutes(router) {
   router.post("/sessions", function () {
     var body = this.req.body;
     var id = uuid.v4();
-    console.dir(body);
     var session = new CompositeRingBuffer(body);
     sessions[id] = session;
     this.res.write(JSON.stringify({ id: id }));
@@ -59,16 +57,17 @@ function setupRoutes(router) {
     var session = sessions[sessionId];
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    
+
 
     var snapshot = session.getAll();
 
     var formatItem = function(item) {
       var tsDate = new Date();
       tsDate.setTime(item.ts);
-      return tsDate.toISOString() + ' ' + item.channel + '[' + item.source + ']: ' + item.msg;
+      var str = tsDate.toISOString() + ' ' + item.channel + '[' + item.source + ']: ' + item.msg + '\n';
+      return str;
     };
-    
+
     snapshot.forEach(function(item) {
       if(item) res.write(formatItem(item));
     });
@@ -80,7 +79,7 @@ function setupRoutes(router) {
     res.on('resume', function() {
       produce = true;
     });
-    
+
     var writeAdded = function(item) {
       if(produce) {
         res.write(formatItem(item));
@@ -97,7 +96,7 @@ function setupRoutes(router) {
     res.on('close', function() {
       console.log('ended');
     });
-    
+
     res.on('end', function() {
       console.log('ended');
     });
