@@ -42,6 +42,7 @@ var sessions = [];
 function setupRoutes(router) {
 
   router.post("/sessions", function () {
+    console.log('POST /sessions', this.req.body);
     var body = this.req.body;
     var id = uuid.v4();
     var session = new CompositeRingBuffer(body);
@@ -50,9 +51,11 @@ function setupRoutes(router) {
     this.res.end();
   });
 
-  // TODO: handle no tail, length and ps/source filtering
   router.get("/sessions/:sessionId", { stream: true }, function (sessionId) {
+    console.log('GET /sessions/' + sessionId);
     var req = this.req, res = this.res;
+    var options = req.query;
+    options.num = options.num || Number.MAX_VALUE;
 
     var session = sessions[sessionId];
     if(!session){
@@ -73,9 +76,25 @@ function setupRoutes(router) {
       return str;
     };
 
-    snapshot.forEach(function(item) {
-      if(item) res.write(formatItem(item));
+    var len = snapshot.length;
+    snapshot.filter(function(item){
+      if(options.ps){
+        return options.ps === item.channel;
+      }
+      return true;
+    }).filter(function(item){
+      if(options.source){
+        return options.source === item.source;
+      }
+      return true;
+    }).forEach(function(item, i) {
+      if(item && len - i <= options.num){
+        res.write(formatItem(item));
+      }
     });
+    if(!options.tail){
+      return res.end();
+    }
 
     var produce  = true;
     res.on('pause', function() {
