@@ -55,6 +55,11 @@ function setupRoutes(router) {
     var req = this.req, res = this.res;
 
     var session = sessions[sessionId];
+    if(!session){
+      res.writeHead(404);
+      res.end();
+      return;
+    }
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
 
